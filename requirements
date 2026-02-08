@@ -1,0 +1,22 @@
+# Dependencias del Sistema de Gestión de Pagos Bancarios
+
+# === INTERFAZ GRÁFICA ===
+# CustomTkinter: Versión moderna y bonita de Tkinter
+customtkinter==5.2.2
+
+# Pillow: Necesario para CustomTkinter (manejo de imágenes)
+Pillow==10.2.0
+
+# tkcalendar: Widget de calendario para selección de fechas
+tkcalendar==1.6.1
+
+# === MANEJO DE EXCEL ===
+# openpyxl: Leer y escribir archivos .xlsx con formato
+openpyxl==3.1.2
+
+# pandas: Análisis y manipulación de datos
+pandas==2.2.0
+
+# === UTILIDADES ===
+# python-dateutil: Manejo avanzado de fechas
+python-dateutil==2.8.2
