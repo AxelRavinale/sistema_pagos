@@ -1,15 +1,6 @@
 """
 ============================================================================
-UI - PESTAÑA AGENDA CHEQUES (PLANTILLA PARA COMPLETAR)
-============================================================================
-EJERCICIO: Completar esta interfaz siguiendo el ejemplo de tab_referencias.py
-
-Funcionalidades a implementar:
-- Formulario para agregar contactos (nombre + CUIT)
-- Validar CUIT antes de guardar
-- Listar todos los contactos
-- Buscar contactos
-- Desactivar contactos
+UI - PESTAÑA AGENDA CHEQUES (CORREGIDA)
 ============================================================================
 """
 
@@ -25,11 +16,9 @@ class TabAgendaCheques(ctk.CTkFrame):
     def __init__(self, parent):
         super().__init__(parent)
         
-        # TODO: Configurar grid para responsive
+        # Configurar grid para responsive
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(1, weight=1)
-
-        # Pista: Mira como lo hace tab_referencias.py
         
         self.crear_interfaz()
         self.cargar_contactos()
@@ -41,48 +30,42 @@ class TabAgendaCheques(ctk.CTkFrame):
         # SECCIÓN 1: NUEVO CONTACTO
         # ====================================================================
         
-        # TODO: Crear frame para nuevo contacto
         frame_nueva = ctk.CTkFrame(self)
         frame_nueva.grid(row=0, column=0, padx=20, pady=20, sticky="ew")
-        # Pista: frame_nueva = ctk.CTkFrame(self)
-        # Pista: frame_nueva.grid(row=0, column=0, ...)
         
-        # TODO: Agregar título "👥 Nuevo Contacto"
+        # Título
         label_titulo = ctk.CTkLabel(
             frame_nueva,
             text="👥 Nuevo Contacto",
             font=("Arial", 18, "bold")
         )
         label_titulo.pack(pady=10)
-        # TODO: Crear frame para el formulario
+        
+        # Frame del formulario
         form_frame = ctk.CTkFrame(frame_nueva)
         form_frame.pack(fill="x", padx=20, pady=10)
 
-        # --- Campo: Nombre ---
-        # TODO: Label "Nombre:"
+        # Campo: Nombre
         ctk.CTkLabel(
             form_frame,
             text="Nombre:",
             font=("Arial", 12)
         ).grid(row=0, column=0, padx=10, pady=10, sticky="w")
-        # TODO: Entry para nombre (self.entry_nombre)
-        # Pista: self.entry_nombre = ctk.CTkEntry(form_frame, width=300)
+        
         self.entry_nombre = ctk.CTkEntry(
             form_frame,
-            width=150,
+            width=300,
             placeholder_text="Ej: Axel Ravinale"
         )
-        self.entry_nombre.grid(row=0, column=1, padx=10, pady=10, sticky="w")
+        self.entry_nombre.grid(row=0, column=1, columnspan=2, padx=10, pady=10, sticky="w")
 
-        # --- Campo: CUIT ---
-        # TODO: Label "CUIT:"
+        # Campo: CUIT
         ctk.CTkLabel(
             form_frame,
             text="CUIT:",
             font=("Arial", 12)
         ).grid(row=1, column=0, padx=10, pady=10, sticky="w")
         
-        # Entry para el CUIT
         self.entry_cuit = ctk.CTkEntry(
             form_frame,
             width=200,
@@ -90,70 +73,63 @@ class TabAgendaCheques(ctk.CTkFrame):
         )
         self.entry_cuit.grid(row=1, column=1, padx=10, pady=10, sticky="w")
         
-        # Botón para validar (llama al método validar_cuit)
         btn_validar_cuit = ctk.CTkButton(
             form_frame,
             text="Validar",
             width=100,
-            command=self.validar_cuit  # ← Acá lo llamás
+            command=self.validar_cuit
         )
         btn_validar_cuit.grid(row=1, column=2, padx=10, pady=10)
         
-        # Label para mostrar el resultado
         self.label_cuit_valido = ctk.CTkLabel(
             form_frame,
-            text="",  # Vacío al principio
+            text="",
             font=("Arial", 12)
         )
         self.label_cuit_valido.grid(row=1, column=3, padx=10, pady=10)
-        # --- Campo: Notas (opcional) ---
-        # TODO: Label "Notas:"
+        
+        # Campo: Notas
         ctk.CTkLabel(
             form_frame,
             text="Notas:",
             font=("Arial", 12)
         ).grid(row=2, column=0, padx=10, pady=10, sticky="w")
-        # TODO: Entry para notas (self.entry_notas)
+        
         self.entry_notas = ctk.CTkEntry(
             form_frame,
-            width=150,
-            placeholder_text="Opcional Ej: Empleado"
+            width=400,
+            placeholder_text="Opcional - Ej: Empleado"
         )
-        self.entry_notas.grid(row=2, column=1, padx=10, pady=10, sticky="w")  
-        # TODO: Botón "✅ Agregar Contacto" que llame a self.agregar_contacto()
+        self.entry_notas.grid(row=2, column=1, columnspan=3, padx=10, pady=10, sticky="w")  
+        
+        # Botón Crear
         self.btn_crear = ctk.CTkButton(
             frame_nueva,
-            text="✅ Crear contacto echeq",
+            text="✅ Agregar Contacto",
             font=("Arial", 14, "bold"),
             height=40,
             command=self.agregar_contacto
         )
         self.btn_crear.pack(pady=15)
         
-        
         # ====================================================================
         # SECCIÓN 2: CONTACTOS EXISTENTES
         # ====================================================================
 
-        # TODO: Crear frame para lista de contactos
-        # Pista: Similar a tab_referencias.py
         frame_lista = ctk.CTkFrame(self)
         frame_lista.grid(row=1, column=0, padx=20, pady=(0, 20), sticky="nsew")
         frame_lista.grid_columnconfigure(0, weight=1)
         frame_lista.grid_rowconfigure(1, weight=1)
 
-
-        # TODO: Agregar título "📚 Contactos Existentes"
+        # Título
         label_titulo_lista = ctk.CTkLabel(
             frame_lista,
-            text="📚 Contactos Echeqs Existentes",
+            text="📚 Contactos Existentes",
             font=("Arial", 18, "bold")
         )
         label_titulo_lista.grid(row=0, column=0, pady=10, sticky="w", padx=20)
 
-        # TODO: Crear barra de búsqueda
-        # Pista: self.entry_busqueda = ctk.CTkEntry(...)
-        # Pista: self.entry_busqueda.bind('<KeyRelease>', lambda e: self.buscar_contactos())
+        # Barra de búsqueda
         frame_busqueda = ctk.CTkFrame(frame_lista)
         frame_busqueda.grid(row=0, column=0, sticky="e", padx=20, pady=10)
         
@@ -166,7 +142,7 @@ class TabAgendaCheques(ctk.CTkFrame):
         self.entry_busqueda = ctk.CTkEntry(
             frame_busqueda,
             width=250,
-            placeholder_text="Buscar por nombre, cuit o notas..."
+            placeholder_text="Buscar por nombre, CUIT o notas..."
         )
         self.entry_busqueda.pack(side="left", padx=5)
         self.entry_busqueda.bind('<KeyRelease>', lambda e: self.buscar_contactos())
@@ -187,9 +163,7 @@ class TabAgendaCheques(ctk.CTkFrame):
         )
         btn_limpiar.pack(side="left", padx=5)
 
-        # TODO: Crear ScrollableFrame para los contactos
-        # Pista: self.frame_items = ctk.CTkScrollableFrame(...)
-
+        # ScrollableFrame
         frame_scroll = ctk.CTkScrollableFrame(
             frame_lista,
             label_text=""
@@ -197,39 +171,12 @@ class TabAgendaCheques(ctk.CTkFrame):
         frame_scroll.grid(row=1, column=0, sticky="nsew", padx=20, pady=10)
         frame_scroll.grid_columnconfigure(0, weight=1)
         
-        # Aquí se agregarán las referencias dinámicamente
         self.frame_items = frame_scroll
-        
     
     def validar_cuit(self):
-        """
-        Valida el CUIT ingresado y muestra el resultado.
-        
-        TODO: Implementar este método
-        
-        Pasos:
-        1. Obtener el CUIT del entry
-        2. Llamar a validar_cuit() de utils.validators
-        3. Actualizar self.label_cuit_valido con ✅ o ❌
-        4. Cambiar color del label (verde o rojo)
-        """
-        # TU CÓDIGO AQUÍ
-        # Pista: cuit = self.entry_cuit.get()
-        # Pista: valido, mensaje = validar_cuit(cuit)
-        # Pista: if valido:
-        #            self.label_cuit_valido.configure(text="✅ Válido", text_color="green")
-        """
-        Valida el CUIT ingresado y muestra el resultado en pantalla.
-        
-        Este método:
-        1. Obtiene el CUIT del entry
-        2. Llama a la función validar_cuit() de utils.validators
-        3. Muestra ✅ verde si es válido, ❌ rojo si no
-        """
-        # 1. Obtener el texto del entry
+        """Valida el CUIT ingresado y muestra el resultado"""
         cuit = self.entry_cuit.get().strip()
         
-        # 2. Verificar que no esté vacío
         if not cuit:
             self.label_cuit_valido.configure(
                 text="⚠️ Ingresa un CUIT",
@@ -237,52 +184,26 @@ class TabAgendaCheques(ctk.CTkFrame):
             )
             return
         
-        # 3. Llamar a la función validadora (de utils/validators.py)
         valido, mensaje = validar_cuit(cuit)
         
-        # 4. Mostrar resultado
         if valido:
-            # Es válido → Verde con ✅
             self.label_cuit_valido.configure(
                 text="✅ CUIT válido",
                 text_color="green"
             )
         else:
-            # No es válido → Rojo con ❌ y el error
             self.label_cuit_valido.configure(
                 text=f"❌ {mensaje}",
                 text_color="red"
             )
     
     def agregar_contacto(self):
-        """
-        Agrega un nuevo contacto a la base de datos.
-        
-        TODO: Implementar este método
-        
-        Pasos:
-        1. Obtener datos del formulario (nombre, cuit, notas)
-        2. Validar que el nombre no esté vacío
-        3. Validar el CUIT
-        4. Llamar a ContactoCheque.crear()
-        5. Mostrar mensaje de éxito
-        6. Limpiar formulario
-        7. Recargar la lista
-        """
-        # TU CÓDIGO AQUÍ
-        # Pista: nombre = self.entry_nombre.get().strip()
-        # Pista: if not nombre:
-        #            messagebox.showwarning("Campo Requerido", "Ingresa un nombre")
-        #            return
-        # Pista: try:
-        #            contacto = ContactoCheque.crear(nombre, cuit, notas)
-        #            messagebox.showinfo("✅ Contacto Creado", ...)
-        #        except Exception as e:
-        #            messagebox.showerror("Error", str(e))
-        nombre = self.entry_nombre.get().title().strip()
+        """Agrega un nuevo contacto a la base de datos"""
+        nombre = self.entry_nombre.get().strip()
         cuit = self.entry_cuit.get().strip()
-        notas = self.entry_notas.get().lower().strip()
+        notas = self.entry_notas.get().strip()
 
+        # Validar nombre
         if not nombre:
             messagebox.showwarning(
                 "Campo Requerido",
@@ -291,30 +212,32 @@ class TabAgendaCheques(ctk.CTkFrame):
             self.entry_nombre.focus()
             return
 
+        # Validar CUIT
         if not cuit:
             messagebox.showwarning(
                 "Campo Requerido",
-                "Por favor ingresa un cuit."
+                "Por favor ingresa un CUIT."
             )
             self.entry_cuit.focus()
             return
-
-        if len(cuit) != 13:
-            messagebox.showwarning(
-                "Cuit Inválido",
-                "El prefijo debe tener exactamente 11 numeros y 2 guiones." \
-                "xx-xxxxxxxx-x"
+        
+        # Validar formato y dígito verificador
+        valido, mensaje = validar_cuit(cuit)
+        if not valido:
+            messagebox.showerror(
+                "CUIT Inválido",
+                mensaje
             )
             self.entry_cuit.focus()
             return
         
         try:
-            #Crear contacto
-            contacto_echeq = ContactoCheque.crear(nombre, cuit, notas)
+            # Crear contacto
+            contacto = ContactoCheque.crear(nombre, cuit, notas)
 
-            #Mensaje de exito
+            # Mensaje de éxito
             messagebox.showinfo(
-                "✅ Contacto echeq Creado",
+                "✅ Contacto Creado",
                 f"Contacto '{nombre}' creado exitosamente!"
             )
 
@@ -325,9 +248,43 @@ class TabAgendaCheques(ctk.CTkFrame):
             self.cargar_contactos()
 
         except ValueError as e:
+            # ✅ MEJORA: Detectar si el contacto existe pero está inactivo
+            error_msg = str(e)
+            
+            if "Ya existe un contacto" in error_msg and "CUIT" in error_msg:
+                # ✅ CORRECCIÓN: obtener_por_cuit retorna UN objeto o None, NO una lista
+                contacto_existente = ContactoCheque.obtener_por_cuit(cuit)
+                
+                if contacto_existente and not contacto_existente.activo:
+                    # Preguntar si quiere reactivarlo
+                    respuesta = messagebox.askyesno(
+                        "Contacto Inactivo",
+                        f"Ya existe un contacto con el CUIT {formatear_cuit(cuit)}, pero está INACTIVO.\n\n"
+                        f"Nombre: {contacto_existente.nombre}\n"
+                        f"Notas: {contacto_existente.notas or 'Sin notas'}\n\n"
+                        "¿Querés reactivar este contacto?"
+                    )
+                    
+                    if respuesta:
+                        # Reactivar y actualizar datos
+                        contacto_existente.nombre = nombre
+                        contacto_existente.notas = notas
+                        contacto_existente.activo = True
+                        contacto_existente.actualizar()
+                        
+                        messagebox.showinfo(
+                            "✅ Contacto Reactivado",
+                            f"Contacto '{nombre}' reactivado exitosamente!"
+                        )
+                        
+                        self.limpiar_formulario()
+                        self.cargar_contactos()
+                    return
+            
+            # Si no es el caso anterior, mostrar el error normal
             messagebox.showerror(
                 "Error de Validación",
-                str(e)
+                error_msg
             )
         except Exception as e:
             messagebox.showerror(
@@ -336,150 +293,205 @@ class TabAgendaCheques(ctk.CTkFrame):
             )
 
     def limpiar_formulario(self):
-        """
-        Limpia todos los campos del formulario.
-        
-        TODO: Implementar este método
-        """
-        # TU CÓDIGO AQUÍ
-        # Pista: self.entry_nombre.delete(0, "end")
-        # Pista: self.entry_cuit.delete(0, "end")
-        # Pista: self.entry_notas.delete(0, "end")
-        # Pista: self.label_cuit_valido.configure(text="")
-        pass
+        """Limpia todos los campos del formulario"""
+        self.entry_nombre.delete(0, "end")
+        self.entry_cuit.delete(0, "end")
+        self.entry_notas.delete(0, "end")
+        self.label_cuit_valido.configure(text="")
+        self.entry_nombre.focus()
     
     def cargar_contactos(self):
-        """
-        Carga todos los contactos de la base de datos.
+        """Carga todos los contactos de la base de datos"""
+        # Limpiar items existentes
+        for widget in self.frame_items.winfo_children():
+            widget.destroy()
         
-        TODO: Implementar este método
-        
-        Pasos:
-        1. Limpiar widgets existentes en self.frame_items
-        2. Obtener contactos con ContactoCheque.obtener_todos()
-        3. Si no hay contactos, mostrar mensaje
-        4. Si hay, crear un item por cada contacto con self.crear_item_contacto()
-        """
-        # TU CÓDIGO AQUÍ
-        # Pista: for widget in self.frame_items.winfo_children():
-        #            widget.destroy()
-        # Pista: contactos = ContactoCheque.obtener_todos()
-        # Pista: for idx, contacto in enumerate(contactos):
-        #            self.crear_item_contacto(contacto, idx)
-        pass
+        try:
+            # ✅ CAMBIO: solo_activos=False para mostrar TODOS
+            contactos = ContactoCheque.obtener_todos(solo_activos=False)
+
+            if not contactos:
+                label_vacio = ctk.CTkLabel(
+                    self.frame_items,
+                    text="No hay contactos creados aún.\nCrea tu primer contacto arriba. 👆",
+                    font=("Arial", 14),
+                    text_color="gray"
+                )
+                label_vacio.pack(pady=50)
+                return
+            
+            # ✅ CORRECCIÓN: self.crear_item_contacto (no self-self)
+            for idx, contacto in enumerate(contactos):
+                self.crear_item_contacto(contacto, idx)
+            
+        except Exception as e:
+            messagebox.showerror(
+                "Error",
+                f"Error al cargar contactos: {e}"
+            )
     
     def crear_item_contacto(self, contacto, index):
-        """
-        Crea un widget que muestra un contacto individual.
+        """Crea un widget que muestra un contacto individual"""
+        # Color alternado
+        color = ("gray90", "gray20") if index % 2 == 0 else ("gray95", "gray25")
         
-        TODO: Implementar este método
-        
-        El widget debe mostrar:
-        - Icono de estado (✅ o ❌)
-        - Nombre del contacto (grande, bold)
-        - CUIT formateado (más chico, gris)
-        - Botón "Desactivar" (si está activo)
-        - Botón "Activar" (si está inactivo)
-        
-        Args:
-            contacto (ContactoCheque): Objeto contacto
-            index (int): Índice para colores alternados
-        """
-        # TU CÓDIGO AQUÍ
-        # Pista: Mira self.crear_item_referencia() en tab_referencias.py
-        # Pista: item_frame = ctk.CTkFrame(self.frame_items, fg_color=...)
-        # Pista: label_nombre = ctk.CTkLabel(item_frame, text=contacto.nombre, ...)
-        # Pista: label_cuit = ctk.CTkLabel(item_frame, text=formatear_cuit(contacto.cuit), ...)
-        pass
-    
+        item_frame = ctk.CTkFrame(
+            self.frame_items,
+            fg_color=color
+        )
+        item_frame.pack(fill="x", pady=2, padx=5)
+        item_frame.grid_columnconfigure(1, weight=1)
+
+        # ✅ CORRECCIÓN: Calcular rowspan ANTES de crear los widgets
+        tiene_notas = bool(contacto.notas)
+        rowspan_value = 3 if tiene_notas else 2
+
+        # Indicador de estado (activo/inactivo)
+        estado_symbol = "✅" if contacto.activo else "❌"
+        label_estado = ctk.CTkLabel(
+            item_frame,
+            text=estado_symbol,
+            font=("Arial", 20)
+        )
+        # ✅ Usar el rowspan correcto desde el principio
+        label_estado.grid(row=0, column=0, padx=10, pady=10, rowspan=rowspan_value)
+
+        # Nombre
+        label_nombre = ctk.CTkLabel(
+            item_frame,
+            text=contacto.nombre,
+            font=("Arial", 16, "bold"),
+            anchor="w"
+        )
+        label_nombre.grid(row=0, column=1, sticky="w", padx=10, pady=(10, 0))
+
+        # CUIT formateado
+        cuit_formateado = formatear_cuit(contacto.cuit)
+        label_cuit = ctk.CTkLabel(
+            item_frame,
+            text=f"CUIT: {cuit_formateado}",
+            font=("Arial", 11),
+            text_color="gray",
+            anchor="w"
+        )
+        label_cuit.grid(row=1, column=1, sticky="w", padx=10, pady=(0, 5))
+
+        # Notas (si existen)
+        if tiene_notas:
+            label_notas = ctk.CTkLabel(
+                item_frame,
+                text=f"Notas: {contacto.notas}",
+                font=("Arial", 10),
+                text_color="gray60",
+                anchor="w"
+            )
+            label_notas.grid(row=2, column=1, sticky="w", padx=10, pady=(0, 10))
+
+        # Botones de acción
+        btn_frame = ctk.CTkFrame(item_frame, fg_color="transparent")
+        btn_frame.grid(row=0, column=2, rowspan=rowspan_value, padx=10)
+
+        # Botón activar/desactivar
+        if contacto.activo:
+            btn_toggle = ctk.CTkButton(
+                btn_frame,
+                text="Desactivar",
+                width=100,
+                fg_color="orange",
+                hover_color="darkorange",
+                command=lambda c=contacto: self.desactivar_contacto(c)
+            )
+        else:
+            btn_toggle = ctk.CTkButton(
+                btn_frame,
+                text="Activar",
+                width=100,
+                fg_color="green",
+                hover_color="darkgreen",
+                command=lambda c=contacto: self.activar_contacto(c)
+            )
+        btn_toggle.pack(side="left", padx=5)
+
     def desactivar_contacto(self, contacto):
-        """
-        Desactiva un contacto.
-        
-        TODO: Implementar este método
-        """
-        # TU CÓDIGO AQUÍ
-        # Pista: Similar a desactivar_referencia() en tab_referencias.py
-        # Pista: respuesta = messagebox.askyesno("Confirmar", ...)
-        # Pista: if respuesta:
-        #            contacto.desactivar()
-        #            self.cargar_contactos()
-        pass
+        """Desactiva un contacto"""
+        respuesta = messagebox.askyesno(
+            "Confirmar Desactivación",
+            f"¿Estás seguro de desactivar el contacto '{contacto.nombre}'?\n\n"
+            "Nota: No podrás usar este contacto en nuevos cheques."
+        )
+
+        if respuesta:
+            try:
+                # ✅ CORRECCIÓN: No usar .desactivar() sino actualizar directamente
+                contacto.activo = False
+                contacto.actualizar()
+                
+                messagebox.showinfo(
+                    "✅ Desactivado",
+                    f"Contacto '{contacto.nombre}' desactivado."
+                )
+                self.cargar_contactos()
+            except Exception as e:
+                messagebox.showerror(
+                    "Error",
+                    f"Error al desactivar: {e}"
+                )
     
     def activar_contacto(self, contacto):
-        """
-        Activa un contacto.
-        
-        TODO: Implementar este método
-        """
-        # TU CÓDIGO AQUÍ
-        pass
+        """Activa un contacto"""
+        try:
+            # ✅ CORRECCIÓN: No usar .activar() sino actualizar directamente
+            contacto.activo = True
+            contacto.actualizar()
+            
+            messagebox.showinfo(
+                "✅ Activado",
+                f"Contacto '{contacto.nombre}' activado."
+            )
+            self.cargar_contactos()
+        except Exception as e:
+            messagebox.showerror(
+                "Error",
+                f"Error al activar: {e}"
+            )
     
     def buscar_contactos(self):
-        """
-        Busca contactos por término.
+        """Busca contactos por término"""
+        termino = self.entry_busqueda.get().strip()
         
-        TODO: Implementar este método
-        """
-        # TU CÓDIGO AQUÍ
-        # Pista: termino = self.entry_busqueda.get().strip()
-        # Pista: if not termino:
-        #            self.cargar_contactos()
-        #            return
-        # Pista: resultados = buscar_contactos_cheque(termino)
-        pass
+        if not termino:
+            self.cargar_contactos()
+            return
+        
+        # Limpiar items existentes
+        for widget in self.frame_items.winfo_children():
+            widget.destroy()
+        
+        try:
+            # ✅ CORRECCIÓN: buscar_contactos_cheque() del modelo (no self.buscar_contactos)
+            resultados = buscar_contactos_cheque(termino)
+            
+            if not resultados:
+                label_vacio = ctk.CTkLabel(
+                    self.frame_items,
+                    text=f"No se encontraron resultados para '{termino}'",
+                    font=("Arial", 14),
+                    text_color="gray"
+                )
+                label_vacio.pack(pady=50)
+                return
+            
+            # Mostrar resultados
+            for idx, contacto in enumerate(resultados):
+                self.crear_item_contacto(contacto, idx)
+        
+        except Exception as e:
+            messagebox.showerror(
+                "Error",
+                f"Error al buscar: {e}"
+            )
     
     def limpiar_busqueda(self):
-        """Limpia la búsqueda"""
-        # TU CÓDIGO AQUÍ
-        pass
-
-
-# ============================================================================
-# AYUDA Y PISTAS
-# ============================================================================
-
-"""
-PISTAS GENERALES:
-
-1. ESTRUCTURA:
-   - Mira tab_referencias.py como guía
-   - La estructura es MUY similar
-   - Solo cambias: Referencias → Contactos, codigo → nombre/cuit
-
-2. VALIDACIÓN DE CUIT:
-   from utils.validators import validar_cuit, formatear_cuit
-   valido, mensaje = validar_cuit(cuit_ingresado)
-   if valido:
-       # Mostrar ✅
-   else:
-       # Mostrar ❌ y mensaje
-
-3. FORMATEO:
-   cuit_formateado = formatear_cuit("20123456789")
-   # Retorna: "20-12345678-9"
-
-4. GRID LAYOUT:
-   # Para 3 columnas:
-   label.grid(row=0, column=0, padx=10, pady=10, sticky="w")
-   entry.grid(row=0, column=1, padx=10, pady=10)
-   button.grid(row=0, column=2, padx=10, pady=10)
-
-5. COLORES ALTERNADOS:
-   color = ("gray90", "gray20") if index % 2 == 0 else ("gray95", "gray25")
-
-6. MESSAGEBOX:
-   from tkinter import messagebox
-   messagebox.showinfo("Título", "Mensaje")
-   messagebox.showwarning("Título", "Mensaje")
-   messagebox.showerror("Título", "Mensaje")
-   respuesta = messagebox.askyesno("Título", "¿Pregunta?")
-
-ERRORES COMUNES A EVITAR:
-
-❌ Olvidar llamar .strip() en los strings
-❌ No validar que los campos no estén vacíos
-❌ No actualizar la lista después de agregar/modificar
-❌ No usar try-except al llamar métodos del modelo
-❌ No limpiar el formulario después de crear
-"""
+        """Limpia la búsqueda y recarga todos los contactos"""
+        self.entry_busqueda.delete(0, "end")
+        self.cargar_contactos()

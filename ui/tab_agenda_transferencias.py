@@ -26,6 +26,8 @@ class TabAgendaTransferencias(ctk.CTkFrame):
         super().__init__(parent)
         
         # TODO: Configurar grid
+        self.grid_columnconfigure(0,weight=1)
+        self.grid_rowconfigure(1, weight=1)
         
         self.crear_interfaz()
         self.cargar_contactos()
